@@ -1,5 +1,19 @@
 # Bookstore Management System
 
+![Screenshot 2025-04-25 211717](https://github.com/user-attachments/assets/14ccd7b7-0ded-44e9-933c-424f26233764)
+
+![Screenshot 2025-04-25 211733](https://github.com/user-attachments/assets/4d5509c6-00ad-48f5-8e49-aa5b450a57c6)
+
+![Screenshot 2025-04-25 211744](https://github.com/user-attachments/assets/d2c377cf-f332-422b-acd3-4043b41fa4c4)
+
+![Screenshot 2025-04-25 211738](https://github.com/user-attachments/assets/39511c03-1362-46c3-a235-bdb6985b77a5)
+
+
+# gif of bookstore management system
+
+![sr_pihu](https://github.com/user-attachments/assets/428fda28-03c2-461d-ae7c-501ab8928a70)
+
+
 A full-featured bookstore management system built with Django that includes user authentication, an admin panel for managing book inventory, and a shopping cart functionality.
 
 ## Features
