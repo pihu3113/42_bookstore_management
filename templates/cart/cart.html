@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart | Bookstore{% endblock %}
+
+{% block content %}
+<h1>Shopping Cart</h1>
+
+{% if cart_items %}
+<table border="1" cellpadding="10" cellspacing="0" width="100%">
+    <thead>
+        <tr bgcolor="#f2f2f2">
+            <th>Book</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_items %}
+        <tr>
+            <td>
+                <a href="{% url 'book_detail' item.book.id %}">{{ item.book.title }}</a> 
+                by {{ item.book.author }}
+            </td>
+            <td>${{ item.book.price }}</td>
+            <td>
+                <form action="{% url 'update_cart' item.book.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.book.stock }}" style="width: 60px;">
+                    <button type="submit">Update</button>
+                </form>
+            </td>
+            <td>${{ item.total }}</td>
+            <td>
+                <a href="{% url 'remove_from_cart' item.book.id %}">Remove</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr bgcolor="#f2f2f2">
+            <td colspan="3" align="right"><strong>Total:</strong></td>
+            <td colspan="2"><strong>${{ total }}</strong></td>
+        </tr>
+    </tfoot>
+</table>
+
+<div style="margin-top: 20px;">
+    <a href="{% url 'home' %}">Continue Shopping</a>
+    <button style="margin-left: 20px;">Checkout</button>
+</div>
+{% else %}
+<p>Your cart is empty.</p>
+<a href="{% url 'home' %}">Continue Shopping</a>
+{% endif %}
+{% endblock %} 

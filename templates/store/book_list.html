@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Books | Bookstore{% endblock %}
+
+{% block content %}
+<h1>Bookstore Catalog</h1>
+
+{% if debug_info %}
+<div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; background-color: #f8f8f8;">
+    <h3>Debug Information</h3>
+    <p><strong>Book Count:</strong> {{ debug_info.book_count }}</p>
+    <p><strong>Database:</strong> {{ debug_info.connection_info.ENGINE }} - {{ debug_info.connection_info.NAME }}</p>
+    <p><strong>Host:</strong> {{ debug_info.connection_info.HOST }}</p>
+</div>
+{% endif %}
+
+<table border="1" cellpadding="10" cellspacing="0" width="100%">
+    <thead>
+        <tr bgcolor="#f2f2f2">
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Rating</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a></td>
+            <td>{{ book.author }}</td>
+            <td>${{ book.price }}</td>
+            <td>
+                {{ book.rating|floatformat:1 }} / 5.0
+                <div style="width: 100px; background-color: #eee; height: 15px;">
+                    <div style="width: {{ book.rating|floatformat:0|default:'0' }}0%; background-color: #fc0; height: 15px;"></div>
+                </div>
+            </td>
+            <td>{% if book.stock > 0 %}In Stock ({{ book.stock }}){% else %}Out of Stock{% endif %}</td>
+            <td>
+                <a href="{% url 'book_detail' book.id %}">View Details</a>
+                {% if book.stock > 0 %}
+                <form action="{% url 'add_to_cart' book.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit">Add to Cart</button>
+                </form>
+                {% else %}
+                <button disabled>Out of Stock</button>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" align="center">No books available at the moment.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %} 

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} | Bookstore{% endblock %}
+
+{% block content %}
+<h1>{{ book.title }}</h1>
+<table border="1" cellpadding="10" cellspacing="0" width="100%">
+    <tr>
+        <th width="30%">Detail</th>
+        <th width="70%">Information</th>
+    </tr>
+    <tr>
+        <td>Author</td>
+        <td>{{ book.author }}</td>
+    </tr>
+    <tr>
+        <td>Price</td>
+        <td>${{ book.price }}</td>
+    </tr>
+    <tr>
+        <td>Rating</td>
+        <td>
+            {{ book.rating|floatformat:1 }} / 5.0
+            <div style="width: 100px; background-color: #eee; height: 15px;">
+                <div style="width: {{ book.rating|floatformat:0|default:'0' }}0%; background-color: #fc0; height: 15px;"></div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Stock</td>
+        <td>{% if book.stock > 0 %}In Stock ({{ book.stock }}){% else %}Out of Stock{% endif %}</td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td>{{ book.description }}</td>
+    </tr>
+    <tr>
+        <td>Cover</td>
+        <td>
+            {% if book.cover_image %}
+            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" style="max-width: 200px;">
+            {% else %}
+            [No Image Available]
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<div style="margin-top: 20px;">
+    {% if book.stock > 0 %}
+    <form action="{% url 'add_to_cart' book.id %}" method="post">
+        {% csrf_token %}
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ book.stock }}" style="width: 60px;">
+        <button type="submit">Add to Cart</button>
+    </form>
+    {% else %}
+    <p><strong>This book is currently out of stock.</strong></p>
+    {% endif %}
+</div>
+
+<div style="margin-top: 20px;">
+    <a href="{% url 'home' %}">Back to Book List</a>
+</div>
+{% endblock %} 
